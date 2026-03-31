@@ -5,16 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class PessoaService {
 
     private AtomicInteger contador = new AtomicInteger(0);
 
-    private Map<String, Pessoa> mapPessoas = Map.ofEntries(
+    private Map<String, Pessoa> mapPessoas = new ConcurrentHashMap<>();
+
+	@PostConstruct
+	public void init() {
+		var mapTemp = Map.ofEntries(
         Map.entry("fulano", new Pessoa(contador.incrementAndGet(),
             "fulano", "Fulano da Silva",
             "fulano@email.com", LocalDate.parse("2000-10-20"))),
@@ -24,7 +31,9 @@ public class PessoaService {
         Map.entry("beltrana", new Pessoa(contador.incrementAndGet(),
             "beltrana", "Beltrana dos Santos",
             "beltrana@email.com", LocalDate.parse("2001-02-23")))
-    );
+    	);
+		mapPessoas.putAll(mapTemp);
+	}
 
     public List<Pessoa> obterPessoas() {
         return new ArrayList<>(mapPessoas.values());
@@ -33,4 +42,10 @@ public class PessoaService {
     public Optional<Pessoa> obterPessoa(String username) {
         return Optional.ofNullable(mapPessoas.get(username));
     }
+
+	public Pessoa incluirNovaPessoa(Pessoa pessoa) {
+		pessoa.setId(contador.incrementAndGet());
+		mapPessoas.put(pessoa.getUsername(), pessoa);
+		return pessoa;
+	}
 }

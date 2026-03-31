@@ -1,37 +1,70 @@
 package br.senac.tads.dsw.dadospessoais;
 
+import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pessoas")
 public class PessoaController {
 
-  private final PessoaService pessoaService;
+	private final PessoaService pessoaService;
 
-  // POR QUE DEVE SER ASSIM?
-  public PessoaController(PessoaService pessoaService) {
-    this.pessoaService = pessoaService;
-  }
+	public PessoaController(PessoaService pessoaService) {
+		this.pessoaService = pessoaService;
+	}
 
-  // COMPLETAR COM ANNOTATIONS NECESSÁRIAS
-  @GetMapping("/{username}")
-  public Pessoa obterPessoa(@PathVariable("username") String username) {
+	@GetMapping
+	public List<Pessoa> obterPessoas() {
+		return pessoaService.obterPessoas();
+	}
 
-    Optional<Pessoa> optPessoa =  pessoaService.obterPessoa(username); // COMPLETAR
-    if (optPessoa.isEmpty()) {
-      // NAO EXISTE PESSOA COM username INFORMADO
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-    Pessoa pessoa = optPessoa.get();
+	@GetMapping("/{username}")
+	public Pessoa obterPessoa(@PathVariable("username") String username) {
 
-    // COMPLETAR
-	return pessoa;
-  }
+		Optional<Pessoa> optPessoa = pessoaService.obterPessoa(username); // COMPLETAR
+		if (optPessoa.isEmpty()) {
+			// NAO EXISTE PESSOA COM username INFORMADO
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		Pessoa pessoa = optPessoa.get();
+
+		// COMPLETAR
+		return pessoa;
+	}
+
+	@PostMapping
+	public ResponseEntity<?> incluirNovo(@RequestBody Pessoa pessoa) {
+		pessoaService.incluirNovaPessoa(pessoa);
+		return ResponseEntity.created(
+			URI.create("http://localhost:8080/pessoas/" + pessoa.getUsername())
+
+		).build();
+	}
+
+	@PostMapping("/valido")
+	public ResponseEntity<?> incluirNovoComValidacao(@RequestBody @Valid Pessoa pessoa) {
+		pessoaService.incluirNovaPessoa(pessoa);
+		// URI location = URI.create("http://localhost:8080/pessoas/" + pessoa.getUsername()).
+
+		URI location = ServletUriComponentsBuilder //
+			.fromCurrentContextPath() //
+			.path("/pessoas/{username}") //
+			.buildAndExpand(pessoa.getUsername()) //
+			.toUri();
+		return ResponseEntity.created(location).build();
+	}
 }

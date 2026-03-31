@@ -88,9 +88,8 @@
             <td>${p.id}</td>
             <td>${p.nome}</td>
             <td>${p.username}</td>
-            <td>Telefone: ${p.telefone}<br />
-              E-mail: ${p.email}</td>
-          </tr>  `)
+            <td>E-mail: ${p.email}</td>
+          </tr>`)
         }
 
         document.getElementById('nome').textContent = dados.nome;
@@ -102,7 +101,7 @@
         alert('Erro na requisição:\n' + err.message);
       }
     }
-    document.getElementById('btnLista').onclick = async (evt) => {
+    document.getElementById('btnListar').onclick = async (evt) => {
       listarPessoas();
     }
 
