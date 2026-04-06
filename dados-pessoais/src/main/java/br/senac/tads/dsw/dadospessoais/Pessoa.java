@@ -13,11 +13,11 @@ public class Pessoa {
 
     private Integer id;
 
-	@NotBlank // @NotEmpty + @NotNull
-	@Size(max = 100)
+	@NotBlank(message = "Preencha o username seu animal") // @NotEmpty + @NotNull
+	@Size(max = 64)
     private String username;
 
-	@NotBlank
+	@NotBlank(message = "Preencha o nome completo seu ignorante")
 	@Size(max = 100)
     private String nome;
 
@@ -29,6 +29,11 @@ public class Pessoa {
 	@NotNull
 	@PastOrPresent
     private LocalDate dataNascimento;
+
+	private String senha;
+
+	private String senhaRepetida;
+
 
     public Pessoa() {
     }
@@ -81,6 +86,19 @@ public class Pessoa {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
 
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 
+	public String getSenhaRepetida() {
+		return senhaRepetida;
+	}
+
+	public void setSenhaRepetida(String senhaRepetida) {
+		this.senhaRepetida = senhaRepetida;
+	}
 }

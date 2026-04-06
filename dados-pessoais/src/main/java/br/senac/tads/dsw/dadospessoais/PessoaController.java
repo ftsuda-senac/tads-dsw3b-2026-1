@@ -46,7 +46,7 @@ public class PessoaController {
 		return pessoa;
 	}
 
-	@PostMapping
+	@PostMapping("/sem-validacao")
 	public ResponseEntity<?> incluirNovo(@RequestBody Pessoa pessoa) {
 		pessoaService.incluirNovaPessoa(pessoa);
 		return ResponseEntity.created(
@@ -55,7 +55,7 @@ public class PessoaController {
 		).build();
 	}
 
-	@PostMapping("/valido")
+	@PostMapping
 	public ResponseEntity<?> incluirNovoComValidacao(@RequestBody @Valid Pessoa pessoa) {
 		pessoaService.incluirNovaPessoa(pessoa);
 		// URI location = URI.create("http://localhost:8080/pessoas/" + pessoa.getUsername()).
