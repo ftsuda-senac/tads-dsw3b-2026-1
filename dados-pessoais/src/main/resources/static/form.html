@@ -14,7 +14,7 @@
       .campo {
         margin-bottom: 15px;
       }
-      label {
+      label, legend {
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
@@ -33,6 +33,9 @@
         font-size: 0.85em;
         margin: 5px 0 0 0;
         min-height: 1em;
+      }
+      fieldset {
+        border: none;
       }
       .checkbox-group {
         border: 1px solid #ccc;
@@ -62,19 +65,15 @@
     <form id="pessoaForm" novalidate>
       <div class="campo">
         <label for="nome">Nome Completo:</label>
-        <input type="text" id="nome" name="nome" required maxlength="100" />
+        <input type="text" id="nome" name="nome"
+          required maxlength="100" />
         <p id="err-nome" class="error-msg"></p>
       </div>
 
       <div class="campo">
         <label for="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          required
-          maxlength="64"
-        />
+        <input type="text" id="username" name="username"
+          required maxlength="64" />
         <p id="err-username" class="error-msg"></p>
       </div>
 
@@ -87,66 +86,84 @@
 
       <div class="campo">
         <label for="telefone">Telefone:</label>
-        <input type="text" id="telefone" name="telefone" maxlength="20" />
+        <input type="text" id="telefone" name="telefone"
+          maxlength="20" />
         <p id="err-telefone" class="error-msg"></p>
       </div>
 
       <div class="campo">
         <label for="dataNascimento">Data de Nascimento:</label>
-        <input
-          type="date"
-          id="dataNascimento"
-          name="dataNascimento"
-          required
-          maxlength="10"
-        />
+        <input type="date" id="dataNascimento" name="dataNascimento"
+          required maxlength="10" />
         <p id="err-dataNascimento" class="error-msg"></p>
       </div>
 
       <div class="campo">
         <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required />
+        <input type="password" id="senha" name="senha"
+          required />
         <p id="err-senha" class="error-msg"></p>
       </div>
 
       <div class="campo">
         <label for="senhaRepeticao">Repetir Senha:</label>
-        <input
-          type="password"
-          id="senhaRepeticao"
-          name="senhaRepeticao"
-          required
-        />
+        <input type="password" id="senhaRepeticao" name="senhaRepeticao"
+          required />
         <p id="err-senhaRepeticao" class="error-msg"></p>
       </div>
 
-      <div class="campo">
-        <label>Conhecimentos:</label>
-        <div class="checkbox-group">
-          <div class="checkbox-item">
-            <input type="checkbox" name="conhecimentos" id="conhecimentos_Java" value="Java" />
-            <label for="conhecimentos_Java">Java</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" name="conhecimentos" id="conhecimentos_SpringBoot" value="Spring Boot" />
-            <label for="conhecimentos_SpringBoot">Spring Boot</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" name="conhecimentos" id="conhecimentos_JavaScript" value="JavaScript" />
-            <label for="conhecimentos_JavaScript">JavaScript</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" name="conhecimentos" id="conhecimentos_Angular" value="Angular" />
-            <label for="conhecimentos_Angular">Angular</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" name="conhecimentos" id="conhecimentos_React" value="React" />
-            <label for="conhecimentos_React">React</label>
-          </div>
-        </div>
-        <p id="err-conhecimentos" class="error-msg"></p>
-      </div>
+      <div class="campo checkbox-group">
+        <fieldset>
+          <legend>Conhecimentos:</legend>
 
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                name="conhecimentos"
+                id="conhecimentos_Java"
+                value="Java"
+              />
+              <label for="conhecimentos_Java">Java</label>
+            </div>
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                name="conhecimentos"
+                id="conhecimentos_SpringBoot"
+                value="Spring Boot"
+              />
+              <label for="conhecimentos_SpringBoot">Spring Boot</label>
+            </div>
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                name="conhecimentos"
+                id="conhecimentos_JavaScript"
+                value="JavaScript"
+              />
+              <label for="conhecimentos_JavaScript">JavaScript</label>
+            </div>
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                name="conhecimentos"
+                id="conhecimentos_Angular"
+                value="Angular"
+              />
+              <label for="conhecimentos_Angular">Angular</label>
+            </div>
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                name="conhecimentos"
+                id="conhecimentos_React"
+                value="React"
+              />
+              <label for="conhecimentos_React">React</label>
+            </div>
+          <p id="err-conhecimentos" class="error-msg"></p>
+          </fieldset>
+      </div>
       <button type="submit">Cadastrar Pessoa</button>
     </form>
 
@@ -155,17 +172,17 @@
       const dataLocal = new Date();
       const ano = dataLocal.getFullYear();
       // O mês começa em 0, por isso somamos 1. O padStart garante o formato '01' em vez de '1'
-      const mes = String(dataLocal.getMonth() + 1).padStart(2, '0');
-      const dia = String(dataLocal.getDate()).padStart(2, '0');
+      const mes = String(dataLocal.getMonth() + 1).padStart(2, "0");
+      const dia = String(dataLocal.getDate()).padStart(2, "0");
 
       const hojeLocal = `${ano}-${mes}-${dia}`;
 
       // Agora o 'max' será exatamente o dia de hoje no fuso do usuário
-      document.getElementById('dataNascimento').setAttribute('max', hojeLocal);
+      document.getElementById("dataNascimento").setAttribute("max", hojeLocal);
 
       document
-        .getElementById('pessoaForm')
-        .addEventListener('submit', async (evt) => {
+        .getElementById("pessoaForm")
+        .addEventListener("submit", async (evt) => {
           evt.preventDefault();
           limparErros();
 
@@ -200,12 +217,12 @@
             conhecimentos: conhecimentos,
           };
 
-          console.log('****** JSON gerado: ' + JSON.stringify(dados));
+          console.log("****** JSON gerado: " + JSON.stringify(dados));
 
           try {
-            const response = await fetch('http://localhost:8080/pessoas', {
-              method: 'POST',
-              headers: { 'content-type': 'application/json' },
+            const response = await fetch("http://localhost:8080/pessoas", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
               body: JSON.stringify(dados),
             });
 
@@ -216,18 +233,18 @@
               }
               return;
             }
-            alert('Cadastro realizado com sucesso!');
+            alert("Cadastro realizado com sucesso!");
             formEl.reset();
           } catch (error) {
-            console.error('Erro na conexão: ', error);
-            alert('Não foi possível conectar ao servidor.');
+            console.error("Erro na conexão: ", error);
+            alert("Não foi possível conectar ao servidor.");
           }
         });
 
       function limparErros() {
         document
-          .querySelectorAll('.error-msg')
-          .forEach((p) => (p.textContent = ''));
+          .querySelectorAll(".error-msg")
+          .forEach((p) => (p.textContent = ""));
       }
 
       function exibirErros(erros) {
