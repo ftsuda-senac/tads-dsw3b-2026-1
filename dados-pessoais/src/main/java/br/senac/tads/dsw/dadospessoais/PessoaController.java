@@ -33,26 +33,26 @@ public class PessoaController {
 	}
 
 	@GetMapping
-	public List<Pessoa> obterPessoas() {
+	public List<PessoaDto> obterPessoas() {
 		return pessoaService.obterPessoas();
 	}
 
 	@GetMapping("/{username}")
-	public Pessoa obterPessoa(@PathVariable("username") String username) {
+	public PessoaDto obterPessoa(@PathVariable("username") String username) {
 
-		Optional<Pessoa> optPessoa = pessoaService.obterPessoa(username); // COMPLETAR
+		Optional<PessoaDto> optPessoa = pessoaService.obterPessoa(username); // COMPLETAR
 		if (optPessoa.isEmpty()) {
 			// NAO EXISTE PESSOA COM username INFORMADO
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
-		Pessoa pessoa = optPessoa.get();
+		PessoaDto pessoa = optPessoa.get();
 
 		// COMPLETAR
 		return pessoa;
 	}
 
 	@PostMapping("/sem-validacao")
-	public ResponseEntity<?> incluirNovo(@RequestBody Pessoa pessoa) {
+	public ResponseEntity<?> incluirNovo(@RequestBody PessoaDto pessoa) {
 		pessoaService.incluirNovaPessoa(pessoa);
 		return ResponseEntity.created(
 			URI.create("http://localhost:8080/pessoas/" + pessoa.getUsername())
@@ -61,7 +61,7 @@ public class PessoaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> incluirNovoComValidacao(@RequestBody @Valid Pessoa pessoa) {
+	public ResponseEntity<?> incluirNovoComValidacao(@RequestBody @Valid PessoaDto pessoa) {
 		pessoaService.incluirNovaPessoa(pessoa);
 		// URI location = URI.create("http://localhost:8080/pessoas/" + pessoa.getUsername()).
 
@@ -75,8 +75,8 @@ public class PessoaController {
 
 	@PutMapping("/{username}")
 	public ResponseEntity<?> atualizar(@PathVariable("username") String username,
-			@RequestBody @Valid PessoaAlteracao pessoa) {
-		Pessoa pessoaAlterada = pessoaService.alterarPessoa(username, pessoa);
+			@RequestBody @Valid PessoaAlteracaoDto pessoa) {
+		PessoaDto pessoaAlterada = pessoaService.alterarPessoa(username, pessoa);
 		return ResponseEntity.ok().body(pessoaAlterada);
 	}
 

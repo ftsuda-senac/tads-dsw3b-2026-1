@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
-public class PessoaAlteracao {
+public class PessoaAlteracaoDto {
 
 	@NotBlank(message = "Preencha o nome completo seu ignorante")
 	@Size(max = 100)
